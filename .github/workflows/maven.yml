@@ -24,6 +24,3 @@ jobs:
 
     - name: Run tests with Maven
       run: mvn test
-
-    - name: Print hello world
-      run: java -cp target/classes com.example.HelloWorld
