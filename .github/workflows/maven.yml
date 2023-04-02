@@ -2,33 +2,28 @@ name: Java CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Setup Java
+    - name: Set up Java JDK
       uses: actions/setup-java@v1
       with:
-        java-version: '11'
+        java-version: 11
 
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build with Maven
+      run: mvn clean package
 
-    - name: Test with Gradle
-      run: ./gradlew test
+    - name: Run tests with Maven
+      run: mvn test
 
-    - name: Static Code Analysis with SonarQube
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: https://sonarcloud.io
+    - name: Print hello world
+      run: java -cp target/classes com.example.HelloWorld
